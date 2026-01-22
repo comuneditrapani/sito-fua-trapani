@@ -38,7 +38,7 @@ function mio_tema_child_enqueue_styles() {
 }
 /**/
 
-/* REGISTRAZIONE DEL POST TYPE 'progetto' COME ARHIVIO  - START */
+/* REGISTRAZIONE DEL POST TYPE 'progetto' COME ARCHIVIO  - START */
 // Child theme: forza archivio per CPT "progetto"
 add_filter('register_post_type_args', function ($args, $post_type) {
 
