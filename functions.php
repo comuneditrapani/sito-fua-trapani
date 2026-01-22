@@ -27,49 +27,55 @@ add_action('wp_enqueue_scripts',
            },
            11);
 
-//add_action( 'wp_enqueue_scripts', 'mio_tema_child_enqueue_styles', 11 );
 
-/*/
-function mio_tema_child_enqueue_styles() {
-    // Carica CSS di Bootstrap Italia
-    wp_enqueue_style( 'bootstrap-italia-css', get_stylesheet_directory_uri() . '/assets/css/bootstrap-italia-comuni.min.css' );
-    // Carica JS di Bootstrap Italia
-    wp_enqueue_script( 'bootstrap-italia-js', get_stylesheet_directory_uri() . '/assets/js/bootstrap-italia.min.js', array(), null, true );
-}
-/**/
+/**
+ * informa dci che il post-type 'progetti' vuole la sua pagina-lista
 
-/* REGISTRAZIONE DEL POST TYPE 'progetto' COME ARCHIVIO  - START */
-// Child theme: forza archivio per CPT "progetto"
+ * Con ACF abbiamo registrato un post-type 'progetti', ciascuno
+ * presentato con la pagina single-progetto.php.  Qui informiamo il
+ * tema che questo post-type è da presentare come lista in una sua
+ * pagina archive-progetto.php
+ */
 add_filter('register_post_type_args', function ($args, $post_type) {
 
-  if ($post_type === 'progetto') {
-    $args['has_archive'] = true;
+    // non capisco perché, ma qui va al singolare.
+    if ($post_type === 'progetto') {
+        $args['has_archive'] = true;
 
-    // Scegli lo slug dell’archivio (URL listing)
-    // Esempio: /progetti/  (puoi mettere 'attuazione-misure-pnrr' se vuoi)
-    $args['rewrite'] = [
-      'slug'       => 'progetti',
-      'with_front' => false,
-    ];
+        // Scegli lo slug dell’archive (URL listing)
+        $args['rewrite'] = [
+            'slug'       => 'progetti',
+            'with_front' => false,
+        ];
 
-    // (opzionale, ma utile) assicura che sia interrogabile
-    $args['public'] = true;
-    $args['publicly_queryable'] = true;
-  }
+        // (opzionale, ma utile) assicura che sia interrogabile
+        $args['public'] = true;
+        $args['publicly_queryable'] = true;
+    }
 
-  return $args;
+    return $args;
 }, 20, 2);
 
-/*ELIMINA IL BREADCRUMB DUPLICATO nella pagina Progetti*/
-add_filter('breadcrumb_trail_args', function ($args) {
 
-  if (is_post_type_archive('progetto')) {
-    // Rimuove la voce finale (quella "active") che duplica il nome dell’archivio
-    $args['show_title'] = false;
-  }
+/**
+ * accorcia la lista dei breadcrumb, se gli ultimi due elementi sono uguali.
 
-  return $args;
-});
+ * rimuove il penultimo (che è un link) e mantiene l'ultimo (che è un testo).
+ */
+
+add_filter('breadcrumb_trail_items', function($items) {
+    if (is_array($items) && count($items) >= 3) {
+        $last = count($items) - 1;
+        $txt_last = trim(wp_strip_all_tags($items[$last]));      // ultimo (active)
+        $txt_prev = trim(wp_strip_all_tags($items[$last - 1]));  // penultimo (link)
+        // Se sono uguali, elimina il penultimo (link) e tieni l'ultimo (testo)
+        if ($txt_last !== '' && $txt_last === $txt_prev) {
+            unset($items[$last - 1]);
+            $items = array_values($items);
+        }
+    }
+    return $items;
+}, 20);
+
 
 ?>
-
