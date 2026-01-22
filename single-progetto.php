@@ -20,6 +20,7 @@ $settore_dintervento   = get_field('settore_dintervento') ?? '';
 $importo_intervento    = get_field('importo_intervento') ?? '';
 $cup                   = get_field('cup') ?? '';
 $avanzamento           = get_field('avanzamento') ?? '';
+$eventi_progetto       = get_field('articoli');
 
 // Utilità
 $fmt_importo = '';
@@ -121,10 +122,39 @@ if ($importo_intervento !== '') {
             <div id="collapseAvanzamento" class="accordion-collapse collapse" aria-labelledby="headingAvanzamento" data-bs-parent="#accordionProgetto">
               <div class="accordion-body">
                 <?php if (!empty($avanzamento)) : ?>
-                  <p class="mb-0"><?php echo esc_html($avanzamento); ?></p>
+                <p class="mb-0"><?php echo esc_html($avanzamento); ?></p>
                 <?php else : ?>
-                  <p class="mb-0 text-muted">Informazione non disponibile.</p>
+                <p class="mb-0 text-muted">Informazione non disponibile.</p>
                 <?php endif; ?>
+		<?php
+                    if( $eventi_progetto ) {
+
+                        foreach($eventi_progetto as $articolo) {
+                            // Presenta l'articolo come desideri
+                            echo '<h2>' . get_the_title($articolo) . '</h2>';
+                            $campo_1 = get_field('tipologia', $articolo);
+                            echo '<p>Campo 1: ' . esc_html($campo_1) . '</p>';
+
+                            // Campo 2
+                            $campo_2 = get_field('protocollo', $articolo);
+                            echo '<p>Campo 2: ' . esc_html($campo_2) . '</p>';
+
+                            // Campo 3
+                            $campo_3 = get_field('data', $articolo);
+                            echo '<p>Campo 3: ' . esc_html($campo_3) . '</p>';
+
+                            // Campo 4
+                            $campo_4 = get_field('titolo', $articolo);
+                            echo '<p>Campo 4: ' . esc_html($campo_4) . '</p>';
+
+                            // Campo 5 (è un documento)
+                            $campo_5 = get_field('documento', $articolo);
+                            echo '<p>Campo 5: ' . esc_html($campo_5) . '</p>';
+
+                        }
+                    }
+                  ?>
+
               </div>
             </div>
           </div>
