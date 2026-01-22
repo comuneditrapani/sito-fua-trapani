@@ -38,5 +38,27 @@ function mio_tema_child_enqueue_styles() {
 }
 /**/
 
+/* REGISTRAZIONE DEL POST TYPE 'progetto' COME ARHIVIO  - START */
+// Child theme: forza archivio per CPT "progetto"
+add_filter('register_post_type_args', function ($args, $post_type) {
+
+  if ($post_type === 'progetto') {
+    $args['has_archive'] = true;
+
+    // Scegli lo slug dell’archivio (URL listing)
+    // Esempio: /progetti/  (puoi mettere 'attuazione-misure-pnrr' se vuoi)
+    $args['rewrite'] = [
+      'slug'       => 'progetti',
+      'with_front' => false,
+    ];
+
+    // (opzionale, ma utile) assicura che sia interrogabile
+    $args['public'] = true;
+    $args['publicly_queryable'] = true;
+  }
+
+  return $args;
+}, 20, 2);
+
 ?>
 
