@@ -103,3 +103,8 @@ body {
 {
 	background: #7a1510 !important;
 }
+
+.accordion-header
+{
+    padding-left: 12px;
+}
