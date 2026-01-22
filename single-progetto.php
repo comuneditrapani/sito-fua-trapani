@@ -1,10 +1,9 @@
 <?php
 /**
- * Luogo template file
+ * template per la pagina di un progetto singolo
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
- * @package Design_Comuni_Italia
  */
 
 get_header();
