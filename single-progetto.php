@@ -1,8 +1,9 @@
 <?php
 /**
- * Single template: Progetto (PNRR)
+ * template per la pagina di un progetto singolo
  *
- * @package Design_Comuni_Italia
+ * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
+ *
  */
 
 get_header();
