@@ -126,34 +126,34 @@ if ($importo_intervento !== '') {
                 <?php else : ?>
                 <p class="mb-0 text-muted">Informazione non disponibile.</p>
                 <?php endif; ?>
-		<?php
-                    if( $eventi_progetto ) {
-
-                        foreach($eventi_progetto as $articolo) {
-                            // Presenta l'articolo come desideri
-                            echo '<h2>' . get_the_title($articolo) . '</h2>';
-                            $campo_1 = get_field('tipologia', $articolo);
-                            echo '<p>Campo 1: ' . esc_html($campo_1) . '</p>';
-
-                            // Campo 2
-                            $campo_2 = get_field('protocollo', $articolo);
-                            echo '<p>Campo 2: ' . esc_html($campo_2) . '</p>';
-
-                            // Campo 3
-                            $campo_3 = get_field('data', $articolo);
-                            echo '<p>Campo 3: ' . esc_html($campo_3) . '</p>';
-
-                            // Campo 4
-                            $campo_4 = get_field('titolo', $articolo);
-                            echo '<p>Campo 4: ' . esc_html($campo_4) . '</p>';
-
-                            // Campo 5 (è un documento)
-                            $campo_5 = get_field('documento', $articolo);
-                            echo '<p>Campo 5: ' . esc_html($campo_5) . '</p>';
-
-                        }
-                    }
-                  ?>
+                <?php if($eventi_progetto) : ?>
+                <table class="table table-striped">
+                  <tbody>
+                    <?php foreach($eventi_progetto as $articolo) {
+                      echo '<tr>';
+                      $campo = get_field('tipologia', $articolo);
+                      echo '<td style="vertical-align: top">'.esc_html($campo).'</td>';
+                      $campo = get_field('protocollo', $articolo);
+                      echo '<td style="vertical-align: top">'.esc_html($campo).'</td>';
+                      $campo = get_field('data', $articolo);
+                      echo '<td style="vertical-align: top">'.esc_html($campo).'</td>';
+                      $campo = get_field('titolo', $articolo);
+                      echo '<td style="vertical-align: top">'.esc_html($campo).'</td>';
+                      $campo = get_field('documento', $articolo);
+                      echo '<td style="vertical-align: top">';
+                      ?>
+                      <a class="d-inline-flex align-items-center gap-2"
+                         href="<?php echo esc_url($campo); ?>"
+                         target="_blank" rel="noopener" title="Scarica il PDF">
+                        <img class="icon" src="<?php echo esc_url( get_stylesheet_directory_uri()); ?>/assets/img/icon-pdf-document.png">
+                      </a>
+                    </td>
+                    <?php
+                      echo '</tr>';
+                      } ?>
+                  </tbody>
+                </table>
+                <?php endif; ?>
 
               </div>
             </div>
