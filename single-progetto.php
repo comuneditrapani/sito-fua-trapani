@@ -127,7 +127,7 @@ if ($importo_intervento !== '') {
                 <p class="mb-0 text-muted">Informazione non disponibile.</p>
                 <?php endif; ?>
                 <?php if($eventi_progetto) : ?>
-                <table class="table table-striped">
+                <table class="table table-striped" style="margin-top: 1em">
                   <tbody>
                     <?php foreach($eventi_progetto as $articolo) {
                       echo '<tr>';
@@ -214,7 +214,7 @@ if ($importo_intervento !== '') {
 
                 <?php if (!empty($avanzamento)) : ?>
                   <dt class="col-5">Avanzamento</dt>
-                  <dd class="col-7"><?php echo esc_html($avanzamento); ?></dd>
+                  <dd class="col-7"><span class="badge bg-primary"><?php echo esc_html($avanzamento); ?></span></dd>
                 <?php endif; ?>
               </dl>
             </div>
