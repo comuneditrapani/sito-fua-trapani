@@ -61,16 +61,27 @@ $archive_url = get_post_type_archive_link('progetto');
             <!-- Filtro per beneficiario (campo ACF text) -->
             <div class="col-12 col-lg-3">
               <label class="form-label" for="beneficiario">Beneficiario</label>
-              <input class="form-control" type="text" id="beneficiario" name="beneficiario"
-                     value="<?php echo esc_attr($benef); ?>"
-                     placeholder="Es. Comune di ...">
+              <select class="form-select" id="beneficiario" name="beneficiario">
+                <option value="">&lt;qualsiasi&gt;</option>
+                <?php
+                $avz_values = ['Buseto Palizzolo', 'Valderice', 'Erice', 'Trapani', 'Paceco', 'Misiliscemi', 'Marsala', 'Petrosino', 'Mazara', 'Campobello di Mazara', 'Castelvetrano'];
+                foreach ($avz_values as $v) {
+                  printf(
+                    '<option value="%s"%s>%s</option>',
+                    esc_attr($v),
+                    selected($benef, $v, false),
+                    esc_html($v)
+                  );
+                }
+                ?>
+              </select>
             </div>
 
             <!-- Filtro per avanzamento (campo ACF text con valori convenzionali) -->
             <div class="col-12 col-lg-3">
               <label class="form-label" for="avanzamento">Avanzamento</label>
               <select class="form-select" id="avanzamento" name="avanzamento">
-                <option value="">&lt;Tutti&gt;</option>
+                <option value="">&lt;qualsiasi&gt;</option>
                 <?php
                 // Valori indicati nell’istruzione del campo ACF "avanzamento" (vedi export JSON)
                 $avz_values = ['Proposto','Approvato','In corso di verifica','Avviato','Avanzato','Concluso','Inaugurato'];
