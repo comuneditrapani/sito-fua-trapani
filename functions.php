@@ -348,4 +348,100 @@ add_action('pre_get_posts', function ($query) {
 
 }, 30); // priority 30: per farlo girare dopo altri eventuali filtri tema/plugin
 
+/**
+ * ============================================================
+ * Ricalcolo _last_event_date_ymd di un progetto quando salvo un evento-progetto
+ * ============================================================
+ *
+ * Problema:
+ * - _last_event_date_ymd viene calcolato quando si salva il "progetto".
+ * - Se qualcuno modifica solo la data di un "evento-progetto", il progetto
+ *   non viene risalvato e quindi _last_event_date_ymd resterebbe vecchio.
+ *
+ * Soluzione:
+ * - Agganciamo acf/save_post anche per il post type "evento-progetto".
+ * - Quando un evento viene salvato, cerchiamo tutti i progetti che lo
+ *   includono nel campo ACF 'articoli' (post_object multiplo).
+ * - Per ogni progetto trovato, ricalcoliamo e aggiorniamo _last_event_date_ymd.
+ *
+ * Nota tecnica:
+ * - ACF salva i campi relationship/post_object multipli come array serializzati
+ *   in wp_postmeta. Per trovare un ID dentro un serializzato si usa meta_query
+ *   con compare LIKE e valore "\"123\"" (ID tra virgolette), come suggerito
+ *   dalla documentazione ACF. [web:327]
+ */
+add_action('acf/save_post', function ($post_id) {
+  // ACF può passare anche valori non numerici (es. "options")
+  if (!is_numeric($post_id)) {
+    return;
+  }  $event_id = (int) $post_id;
+
+  // Interveniamo SOLO quando viene salvato un "evento-progetto"
+  if (get_post_type($event_id) !== 'evento-progetto') {
+    return;
+  }
+
+  /**
+   * 1) Trova i Progetti che contengono questo evento nel campo 'articoli'
+   *    (field ACF sul CPT "progetto").
+   *
+   * Usa LIKE su valore con virgolette per matchare l'elemento nell'array serializzato:
+   * esempio: a:2:{i:0;s:2:"35";i:1;s:2:"99";}
+   */
+  $q = new WP_Query([
+    'post_type'      => 'progetto',
+    'post_status'    => 'any',   // oppure 'publish' se vuoi aggiornare solo i pubblicati
+    'posts_per_page' => -1,
+    'fields'         => 'ids',   // ottimizzazione: ci servono solo gli ID
+    'no_found_rows'  => true,    // ottimizzazione: niente paginazione
+    'meta_query'     => [
+      [
+        'key'     => 'articoli',
+        'value'   => '"' . $event_id . '"', // IMPORTANTISSIMO: ID tra virgolette
+        'compare' => 'LIKE',
+      ],
+    ],
+  ]);
+
+  if (empty($q->posts)) {
+    return; // nessun progetto referenzia questo evento
+  }
+
+  /**
+   * 2) Per ogni progetto trovato, ricalcoliamo _last_event_date_ymd
+   *    con la stessa logica usata nel salvataggio del progetto.
+   *
+   * NB: qui NON chiamiamo wp_update_post() (evitiamo loop di salvataggi),
+   *     ma aggiorniamo solo post meta.
+   */
+  foreach ($q->posts as $pid) {
+    $pid = (int) $pid;
+    // Legge gli eventi collegati dal progetto (field ACF 'articoli')
+    $event_ids = get_field('articoli', $pid);
+    if (empty($event_ids) || !is_array($event_ids)) {
+      update_post_meta($pid, '_last_event_date_ymd', 0);
+      continue;
+    }
+    $max_ymd = 0;
+    foreach ($event_ids as $eid) {
+      $eid = (int) $eid;
+      // Campo ACF 'data' sul CPT 'evento-progetto' (return_format d/m/Y)
+      $d = get_field('data', $eid);
+      if (empty($d)) {
+        continue;
+      }
+      $dt = date_create_from_format('d/m/Y', $d);
+      if (!$dt) {
+        continue;
+      }
+      $ymd = (int) $dt->format('Ymd');
+      if ($ymd > $max_ymd) {
+        $max_ymd = $ymd;
+      }
+    }
+    update_post_meta($pid, '_last_event_date_ymd', $max_ymd);
+  }  // Pulizia
+  wp_reset_postdata();}, 30); // priority 30: dopo che ACF ha salvato i campi dell'evento [web:263]
+
+
 ?>
