@@ -256,7 +256,7 @@ add_action('pre_get_posts', function ($query) {
     $meta_query[] = [
       'key'     => 'beneficiario',
       'value'   => sanitize_text_field(wp_unslash($_GET['beneficiario'])),
-      'compare' => 'LIKE',
+      'compare' => '=',
     ];
   }
 
