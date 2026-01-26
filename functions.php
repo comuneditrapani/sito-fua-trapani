@@ -418,10 +418,6 @@ add_action('acf/save_post', function ($post_id) {
     $pid = (int) $pid;
     // Legge gli eventi collegati dal progetto (field ACF 'articoli')
     $event_ids = get_field('articoli', $pid);
-    if (empty($event_ids) || !is_array($event_ids)) {
-      update_post_meta($pid, '_last_event_date_ymd', 0);
-      continue;
-    }
     $max_ymd = 0;
     foreach ($event_ids as $eid) {
       $eid = (int) $eid;
