@@ -70,7 +70,7 @@ $archive_url = get_post_type_archive_link('progetto');
             <div class="col-12 col-lg-3">
               <label class="form-label" for="avanzamento">Avanzamento</label>
               <select class="form-select" id="avanzamento" name="avanzamento">
-                <option value="">Tutti</option>
+                <option value="">&lt;Tutti&gt;</option>
                 <?php
                 // Valori indicati nell’istruzione del campo ACF "avanzamento" (vedi export JSON)
                 $avz_values = ['Proposto','Approvato','In corso di verifica','Avviato','Avanzato','Concluso','Inaugurato'];
@@ -90,6 +90,7 @@ $archive_url = get_post_type_archive_link('progetto');
             <div class="col-12 col-lg-4">
               <label class="form-label" for="ord">Ordina per</label>
               <select class="form-select" id="ord" name="ord">
+                <option value="">&lt;scegli&gt;</option>
                 <option value="event_desc" <?php selected($ord, 'event_desc'); ?>>Data (evento più recente → meno recente)</option>
                 <option value="event_asc"  <?php selected($ord, 'event_asc');  ?>>Data (evento meno recente → più recente)</option>
                 <option value="title_asc"  <?php selected($ord, 'title_asc');  ?>>Titolo (A → Z)</option>
