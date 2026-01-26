@@ -223,6 +223,21 @@ add_action('pre_get_posts', function ($query) {
   if (!is_post_type_archive('progetto')) {
     return;
   }
+  
+  // -------------------------------------------------------------------
+  // DEFAULT: nessun filtro applicato => mostra TUTTI i progetti
+  // -------------------------------------------------------------------
+  // Se non arriva nessun parametro dal form, NON tocchiamo la query.
+  // In questo modo l'archivio si comporta come un normale archive (tutti i post).
+  $has_filters =
+    (!empty($_GET['q'])) ||
+    (!empty($_GET['beneficiario'])) ||
+    (!empty($_GET['avanzamento'])) ||
+    (!empty($_GET['ord']));
+
+  if (!$has_filters) {
+    return;
+  }
 
   /**
    * Costruiamo una meta_query:
