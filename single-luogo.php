@@ -198,12 +198,6 @@ get_header();
                 get_template_part('template-parts/single/punto-contatto');
             } ?>
           <?php } ?>
-          <?php if( is_array($organizzatori) && count($organizzatori) ) { ?>
-            <h4 class="h5 mt-4">Con il supporto di:</h4>
-            <?php foreach ($organizzatori as $uo_id) {
-                get_template_part("template-parts/unita-organizzativa/card-full");
-            } ?>
-          <?php } ?>
           </article>
 
           <?php if($struttura_responsabile) {?>
