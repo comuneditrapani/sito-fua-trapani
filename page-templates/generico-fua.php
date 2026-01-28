@@ -31,10 +31,11 @@ get_header();
               }
             ?>
           <section id="head-section">
-            <?php get_template_part("template-parts/home/notizie");
+            <?php
               if (is_front_page()) {
                   get_template_part("template-parts/luogo/tutti-luoghi");
               }
+              get_template_part("template-parts/home/notizie");
             ?>
         </section>
       </div>
