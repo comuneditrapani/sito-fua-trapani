@@ -17,6 +17,23 @@
 
  */
 
+/**
+  quale template viene usato dai post singoli
+
+  per qualche motivo dobbiamo scrivere questo filtro, selezionando in
+  base al campo post_type, ma ci sarà modo di scriverlo nella base
+  dati? in modo che l'abbinamento non sia programmatico?
+ */
+add_filter('single_template', function($single) {
+    global $post;
+    if ($post->post_type == 'unita_organizzativa') {
+        if (file_exists(get_stylesheet_directory() . '/page-templates/generico-fua.php')) {
+            return get_stylesheet_directory() . '/page-templates/generico-fua.php';
+        }
+    }
+    return $single;
+});
+
 add_action('wp_enqueue_scripts',
            function() {
                wp_enqueue_style('child-style', get_stylesheet_uri(), array('dci-wp-style'));
