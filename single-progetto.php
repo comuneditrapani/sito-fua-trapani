@@ -36,16 +36,16 @@ if ($importo_intervento !== '') {
 
 <main id="main">
   <div class="container" id="main-container">
-
-    <div class="row">
-      <div class="col-12 px-lg-4">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-10">
         <?php get_template_part("template-parts/common/breadcrumb"); ?>
       </div>
     </div>
-
-    <div class="row">
+  </div>
+  <div class="container" >
+    <div class="row justify-content-center">
       <!-- Colonna contenuto -->
-      <div class="col-lg-8 px-lg-4 py-3">
+      <div class="col-12 col-lg-6 py-3">
 
         <header class="mb-4">
           <h1 class="mb-2"><?php the_title(); ?></h1>

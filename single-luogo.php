@@ -45,14 +45,14 @@ get_header();
 
   ?>
 
-    <div class="container px-4 my-4" id="main-container">
-      <div class="row">
-        <div class="col px-lg-4">
+    <div class="container px-4" id="main-container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
             <?php get_template_part("template-parts/common/breadcrumb"); ?>
         </div>
       </div>
-      <div class="row">
-        <div class="col-lg-8 px-lg-4 py-lg-2">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-6 py-lg-2">
           <h1 data-audio><?php the_title(); ?></h1>
           <?php if ($nome_alternativo) { ?>
           <h2 class="h4 py-2" data-audio><?php echo $nome_alternativo; ?></h2>

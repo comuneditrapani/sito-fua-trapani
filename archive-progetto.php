@@ -34,14 +34,14 @@ $archive_url = get_post_type_archive_link('progetto');
 <main id="main">
   <div class="container" id="main-container">
 
-    <div class="row">
-      <div class="col-12 px-lg-4">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-10">
         <?php get_template_part("template-parts/common/breadcrumb"); ?>
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-12 px-lg-4 py-3">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-10 py-3">
 
         <h1 class="mb-2"><?php post_type_archive_title(); ?></h1>
         <p class="lead mb-4">Elenco dei progetti, con schede di dettaglio.</p>
