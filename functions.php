@@ -140,6 +140,13 @@ add_filter('breadcrumb_trail_items', function ($items) {
 
 }, 20);
 
+add_filter('breadcrumb_trail_items', function ($items) {
+    return array_values(array_filter($items, function ($item) {
+        // rimuove il livello "Vivere il Comune"
+        return strpos($item, 'Vivere il Comune') === false;
+    }));
+});
+
 /**
  * ------------------------------------------------------------
  * 3) CALCOLO "DATA EVENTO PIÙ RECENTE" SUL PROGETTO
