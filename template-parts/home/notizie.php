@@ -36,6 +36,7 @@ $overlapping = "";
     <div class="section-content">
         <div class="container">
             <h2 id="novita-in-evidenza" class="visually-hidden">Novità in evidenza</h2>
+
             <?php if ($post_id) {
                 $overlapping = "card-overlapping";
             ?>
@@ -72,35 +73,75 @@ $overlapping = "";
                 </div>
 
             <?php }
+
+            /**
+             * ==========================================================
+             * INIZIO MODIFICA (separazione visiva "Ultime news")
+             * ==========================================================
+             *
+             * Obiettivo:
+             * - separare la sezione "Ultime news" dal resto del contenuto
+             *   usando uno sfondo differente e padding verticale.
+             *
+             * Scelta tecnica:
+             * - non tocchiamo la parte "Novità in evidenza" (sopra), che spesso
+             *   usa layout con overlapping e potrebbe risentire di wrapper extra.
+             * - wrappiamo SOLO il blocco che stampa: titolo "Ultime news", cards e CTA.
+             *
+             * Nota su stile:
+             * - usiamo utility Bootstrap per spaziature (py-*, mt-*) e una variabile
+             *   di colore bootstrap (--bs-gray-100) per restare coerenti col tema.
+             *   Le utility di spaziatura sono lo standard del framework. [web:383][web:384]
+             */
             if ($posts && is_array($posts) && count($posts) > 0) { ?>
-                <?php if (!$post_id) { ?>
-                    <div class="row row-title pt-lg-60 pb-3">
-                        <div class="col-12 d-lg-flex justify-content-between">
-                            <h2 id="ultime-news" class="mb-lg-0">Ultime news</h2>
+
+                <div class="mt-5 py-4 px-0" style="background-color: var(--bs-gray-100);">
+                    <?php
+                    /**
+                     * Se non c'è "post in evidenza" ($post_id è vuoto),
+                     * mostriamo il titolo "Ultime news" qui dentro,
+                     * così anche il titolo entra nell'area con sfondo.
+                     */
+                    ?>
+                    <?php if (!$post_id) { ?>
+                        <div class="row row-title pt-lg-60 pb-3">
+                            <div class="col-12 d-lg-flex justify-content-between">
+                                <h2 id="ultime-news" class="mb-lg-0">Ultime news</h2>
+                            </div>
+                        </div>
+                    <?php } ?>
+
+                    <div class="row mb-2">
+                        <div class="card-wrapper px-0 <?php echo $overlapping; ?> card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
+                            <?php
+                            foreach ($posts as $post) {
+                                if ($post) {
+                                    get_template_part("template-parts/home/notizia-evidenza");
+                                }
+                            }
+                            ?>
                         </div>
                     </div>
-                <?php } ?>
-                <div class="row mb-2">
-                    <div class="card-wrapper px-0 <?php echo $overlapping; ?> card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
-                        <?php
-                        foreach ($posts as $post) {
-                            if ($post) {
-                                get_template_part("template-parts/home/notizia-evidenza");
-                            }
-                        }
-                        ?>
+
+                    <div class="row my-4 justify-content-md-center">
+                        <a class="read-more pb-3" href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>">
+                            <button type="button" class="btn btn-outline-primary">
+                                Tutte le novità
+                                <svg class="icon">
+                                    <use xlink:href="#it-arrow-right"></use>
+                                </svg>
+                            </button>
+                        </a>
                     </div>
                 </div>
-                <div class="row my-4 justify-content-md-center">
-                    <a class="read-more pb-3" href="<?php echo dci_get_template_page_url("page-templates/novita.php"); ?>">
-                        <button type="button" class="btn btn-outline-primary">Tutte le novità
-                            <svg class="icon">
-                                <use xlink:href="#it-arrow-right"></use>
-                            </svg>
-                        </button>
-                    </a>
-                </div>
-            <?php } ?>
+
+            <?php
+            /**
+             * ==========================================================
+             * FINE MODIFICA
+             * ==========================================================
+             */
+            } ?>
         </div>
     </div>
 </section>
