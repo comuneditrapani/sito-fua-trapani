@@ -112,7 +112,9 @@ $overlapping = "";
                     <?php } ?>
 
                     <div class="row mb-2">
-                        <div class="card-wrapper px-0 <?php echo $overlapping; ?> card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3">
+                        <!-- INIZIO MODIFICA: aggiungo classi per far "vedere" lo sfondo della sezione -->
+						<div class="card-wrapper px-0 <?php echo $overlapping; ?> card-teaser-wrapper card-teaser-wrapper-equal card-teaser-block-3 bg-transparent dci-news-cards-transparent">
+						<!-- FINE MODIFICA -->
                             <?php
                             foreach ($posts as $post) {
                                 if ($post) {

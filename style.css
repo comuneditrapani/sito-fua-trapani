@@ -113,3 +113,10 @@ body {
 {
     display: block;
 }
+
+/* INIZIO MODIFICA: permette allo sfondo della sezione "Ultime news" di vedersi anche dietro le card */
+.dci-news-cards-transparent,
+.dci-news-cards-transparent * {
+  background-color: transparent !important;
+}
+/* FINE MODIFICA */
