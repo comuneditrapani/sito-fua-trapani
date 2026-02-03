@@ -84,7 +84,7 @@ $archive_url = get_post_type_archive_link('progetto');
                 <option value="">&lt;qualsiasi&gt;</option>
                 <?php
                 // Valori indicati nell’istruzione del campo ACF "avanzamento" (vedi export JSON)
-                $values = ['Proposto','Approvato','In corso di verifica','Avviato','Avanzato','Concluso','Inaugurato'];
+                    $values = ['Progetto Fattibilità T.E.', 'Proposto', 'Esecutivo', 'Approvato', 'In corso di verifica', 'Cantierabile', 'Avviato', 'Avanzato', 'Concluso', 'Inaugurato'];
                 foreach ($values as $v) {
                   printf(
                     '<option value="%s"%s>%s</option>',
