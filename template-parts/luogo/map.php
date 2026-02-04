@@ -41,6 +41,7 @@ if($c) { ?>
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                 maxZoom: 18,
             }).addTo(mymap);
+            mymap.setZoom(17);
 
             var arrayOfMarkers = [<?php foreach ($arr_luoghi as $marker){ ?> [ <?php echo $marker["gps"]["lat"]; ?>, <?php echo $marker["gps"]["lng"]; ?>], <?php } ?>];
             var bounds = new L.LatLngBounds(arrayOfMarkers);
