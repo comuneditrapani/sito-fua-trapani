@@ -28,7 +28,7 @@
 						<img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/img/fsc.png" alt="Logo 3" height="40">
 					  </li>
 					  <li class="list-inline-item me-3">
-						<img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/img/rep-ita.png" alt="Logo 4" height="40">
+						<img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/img/rep-ita.svg" alt="Logo 4" height="40">
 					  </li>
 					  <li class="list-inline-item">
 						<img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/img/reg-sic.png" alt="Logo 5" height="40">
