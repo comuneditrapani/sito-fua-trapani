@@ -464,41 +464,26 @@ add_action('acf/save_post', function ($post_id) {
   
   
   
-  //TENTO DI MODIFICARE LA URL eliminando la parte 'vivere-il-comune' utilizzando la funzione di rewrite.
-  //  Non resco a capire se lo slug del custom post type si chiama 'luogo' oppure 'luoghi' quindi eseguo il controllo su entrambi
-  // Usando with_front => false, si evita che si aggiunga vivere-il-comune/ davanti
-  // 2 = numero di argomenti da ricevere nella callback ($args e $post_type)poichè spesso riceve solo $args e quindi non funzionerebbe il filtro per post type.
-  
+  /**
+  * TENTO DI MODIFICARE LA URL eliminando la parte 'vivere-il-comune' utilizzando la funzione di rewrite.
+  * Non resco a capire se lo slug del custom post type si chiama 'luogo' oppure 'luoghi' quindi eseguo il controllo su entrambi
+  * Usando with_front => false, si evita che si aggiunga vivere-il-comune/ davanti
+  * 2 = numero di argomenti da ricevere nella callback ($args e $post_type)poichè spesso riceve solo $args e quindi non funzionerebbe il filtro per post type.
+  */
   
   add_filter('register_post_type_args', function ($args, $post_type) {
 
-  // PROVA 1: se il CPT si chiama "luogo"
-  if ($post_type === 'luogo') {
-    $args['rewrite'] = array_merge(
-      isset($args['rewrite']) && is_array($args['rewrite']) ? $args['rewrite'] : [],
-      [
-        'slug'       => 'luoghi',
-        'with_front' => false,
-      ]
-    );
-  }
-
-  // PROVA 2: se invece il CPT si chiama "luoghi"
-  if ($post_type === 'luoghi') {
-    $args['rewrite'] = array_merge(
-      isset($args['rewrite']) && is_array($args['rewrite']) ? $args['rewrite'] : [],
-      [
-        'slug'       => 'luoghi',
-        'with_front' => false,
-      ]
-    );
+  if ($post_type === 'luogo' || $post_type === 'luoghi') {
+    $rewrite = (isset($args['rewrite']) && is_array($args['rewrite'])) ? $args['rewrite'] : [];
+    $rewrite['slug'] = 'comuni-fua';
+    $rewrite['with_front'] = false;
+    $args['rewrite'] = $rewrite;
   }
 
   return $args;
 }, 99, 2);
 
 
-//
 
 
 ?>
