@@ -459,51 +459,50 @@ add_action('acf/save_post', function ($post_id) {
     update_post_meta($pid, '_last_event_date_ymd', $max_ymd);
   }  // Pulizia
   wp_reset_postdata();}, 30); // priority 30: dopo che ACF ha salvato i campi dell'evento [web:263]
-  
-  
-  
-  
-  
+
+
+
+
+
   /**
   * TENTO DI MODIFICARE LA URL eliminando la parte 'vivere-il-comune' utilizzando la funzione di rewrite.
   * Non resco a capire se lo slug del custom post type si chiama 'luogo' oppure 'luoghi' quindi eseguo il controllo su entrambi
   * Usando with_front => false, si evita che si aggiunga vivere-il-comune/ davanti
-  * 2 = numero di argomenti da ricevere nella callback ($args e $post_type)poichè spesso riceve solo $args e quindi non funzionerebbe il filtro per post type.
+  * 2 = numero di argomenti da ricevere nella callback ($args e $post_type)
+  *     poichè spesso riceve solo $args e quindi non funzionerebbe il filtro per post type.
   */
-  
-  add_filter('register_post_type_args', function ($args, $post_type) {
 
-  if ($post_type === 'luogo' || $post_type === 'luoghi') {
-    $rewrite = (isset($args['rewrite']) && is_array($args['rewrite'])) ? $args['rewrite'] : [];
-    $rewrite['slug'] = 'comuni-fua';
-    $rewrite['with_front'] = false;
-    $args['rewrite'] = $rewrite;
-  }
+add_filter('register_post_type_args', function ($args, $post_type) {
+    if ($post_type === 'luogo' || $post_type === 'luoghi') {
+        $rewrite = (isset($args['rewrite']) && is_array($args['rewrite'])) ? $args['rewrite'] : [];
+        $rewrite['slug'] = 'comuni-fua';
+        $rewrite['with_front'] = false;
+        $args['rewrite'] = $rewrite;
+    }
 
-  return $args;
+    return $args;
 }, 99, 2);
 
 
 //Riproviamo a ricostruire i breadcrums della pagina di un singolo comune-fua
-add_filter('breadcrumb_trail_items', function ($items, $args) {
+add_filter('breadcrumb_trail_items', function ($items) {
+    // Quando sei nel singolo "Luogo"
+    if ( is_singular('luogo') || is_singular('luoghi') ) {
 
-  // Quando sei nel singolo "Luogo"
-  if ( is_singular('luogo') || is_singular('luoghi') ) {
+        $label = 'Comuni FUA';
 
-    $label = 'Comuni FUA';
+        // Item NON cliccabile: niente <a>, solo testo
+        $crumb_html = sprintf(
+            '<li class="breadcrumb-item"><a href="%s">%s</a></li>',
+            home_url(),
+            esc_html($label)
+        );
 
-    // Item NON cliccabile: niente <a>, solo testo
-    $crumb_html = sprintf(
-      '<li class="breadcrumb-item">%s</li>',
-      esc_html($label)
-    );
-
-    // Inserisci dopo Home (posizione 1)
-    array_splice($items, 1, 0, [$crumb_html]);
-  }
-
-  return $items;
-}, 10, 2);
+        // Inserisci dopo Home (posizione 1)
+        array_splice($items, 1, 0, [$crumb_html]);
+    }
+    return $items;
+}, 30);
 
 
 
