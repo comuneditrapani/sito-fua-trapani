@@ -91,7 +91,7 @@ $overlapping = "";
              * Nota su stile:
              * - usiamo utility Bootstrap per spaziature (py-*, mt-*) e una variabile
              *   di colore bootstrap (--bs-gray-100) per restare coerenti col tema.
-             *   Le utility di spaziatura sono lo standard del framework. [web:383][web:384]
+             *   Le utility di spaziatura sono lo standard del framework. 
              */
             if ($posts && is_array($posts) && count($posts) > 0) { ?>
 

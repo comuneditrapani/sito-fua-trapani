@@ -18,19 +18,19 @@
                 <div class="col-12 footer-items-wrapper logo-wrapper">
                 <!--<img class="ue-logo" src="<?php // echo esc_url( get_template_directory_uri()); ?>/assets/img/logo-eu-inverted.svg" alt="logo Unione Europea"> -->
 					<ul class="list-inline m-0 footer-logos">
-					  <li class="list-inline-item me-3">
+					  <li class="list-inline-item me-3 mb-3">
 						<img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/img/coesione-sicilia.png" alt="Logo 1" height="40">
 					  </li>
-					  <li class="list-inline-item me-3">
+					  <li class="list-inline-item me-3 mb-3">
 						<img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/img/ue-fund.png" alt="Logo 2" height="40">
 					  </li>
-					  <li class="list-inline-item me-3">
+					  <li class="list-inline-item me-3 mb-3">
 						<img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/img/fsc.png" alt="Logo 3" height="40">
 					  </li>
-					  <li class="list-inline-item me-3">
+					  <li class="list-inline-item me-3 mb-3">
 						<img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/img/rep-ita.svg" alt="Logo 4" height="40">
 					  </li>
-					  <li class="list-inline-item">
+					  <li class="list-inline-item me-3 mb-3">
 						<img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/img/reg-sic.png" alt="Logo 5" height="40">
 					  </li>
 					</ul>
