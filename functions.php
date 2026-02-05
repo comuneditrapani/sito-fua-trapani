@@ -503,6 +503,22 @@ add_filter('breadcrumb_trail_items', function ($items) {
     return $items;
 }, 30);
 
+// utili per il debug, vedi cosa fanno i tuoi filtri.
+if(false){
+    $callback_group = 'breadcrumb_trail_items';
+
+    // prima…
+    add_filter($callback_group, function ($items) {
+        echo sprintf("<pre>%s</pre>", print_r($items, true));
+        return $items;
+    }, 1);
+
+    // dopo
+    add_filter($callback_group, function ($items) {
+        echo sprintf("<pre>%s</pre>", print_r($items, true));
+        return $items;
+    }, 1010);
+}
 
 
 
