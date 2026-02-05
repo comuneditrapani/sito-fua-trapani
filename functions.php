@@ -527,7 +527,26 @@ if(false){
     }, 1010);
 }
 
+    /**
+    * creo un filtro per rendere non linkabile il crumb "Amministrazione"
+    * soluzione temporanea in attesa adi avere tutti i dati della sezione Amministrazione
+    */
+add_filter('breadcrumb_trail_items', function ($items, $args) {
 
+  foreach ($items as $i => $item_html) {
+
+    // Match ESATTO dell'anchor che contiene <span itemprop="name">Amministrazione</span>
+    // (così non tocchiamo altri casi e restiamo allineati al markup reale del tema)
+    $pattern = '/<a\b[^>]*>\s*<span\b[^>]*itemprop\s*=\s*"name"[^>]*>\s*Amministrazione\s*<\/span>\s*<\/a>/iu';
+
+    if (preg_match($pattern, $item_html)) {
+      $replacement = '<span itemprop="item"><span itemprop="name">Amministrazione</span></span>';
+      $items[$i] = preg_replace($pattern, $replacement, $item_html);
+    }
+  }
+
+  return $items;
+}, 20, 2);
 
 
 ?>
