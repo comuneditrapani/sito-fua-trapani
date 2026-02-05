@@ -139,7 +139,7 @@ get_header();
                     <section class="col-lg-8 it-page-sections-container border-light">
                     <article class="it-page-section anchor-offset" data-audio>
                         <h4 id="descrizione">Descrizione</h4>
-                        <div class="richtext-wrapper lora">
+                        <div class="richtext-wrapper">
                             <?php echo $descrizione; ?>
                         </div>
                     </article>
