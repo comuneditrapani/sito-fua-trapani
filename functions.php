@@ -34,15 +34,18 @@ add_filter('single_template', function($single) {
     return $single;
 });
 
-add_action('wp_enqueue_scripts',
-           function() {
-               wp_enqueue_style('child-style', get_stylesheet_uri(), array('dci-wp-style'));
-               if (wp_style_is('dci-comuni') ) {
-                   $localpath = get_stylesheet_directory_uri() . '/assets/css/bootstrap-italia-comuni.min.css';
-                   wp_styles()->registered['dci-comuni']->src = $localpath;
-               }
-           },
-           11);
+/**
+ * sostituisce il bootstrap-italia-comuni.min.css del tema parent con il nostro.
+
+ * vedi https://github.com/italia/design-comuni-wordpress-theme/issues/484#issuecomment-3778142817
+ */
+add_action('wp_enqueue_scripts', function() {
+    wp_enqueue_style('child-style', get_stylesheet_uri(), array('dci-wp-style'));
+    if (wp_style_is('dci-comuni') ) {
+        $localpath = get_stylesheet_directory_uri() . '/assets/css/bootstrap-italia-comuni.min.css';
+        wp_styles()->registered['dci-comuni']->src = $localpath;
+    }
+}, 11);
 
 
 /**
