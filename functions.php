@@ -537,8 +537,8 @@ add_filter('breadcrumb_trail', function ($items) {
     if (preg_match($pattern, $items)) {
         $replacement = '<span itemprop="item"><span itemprop="name">Amministrazione</span></span>';
         $items = preg_replace($pattern, $replacement, $items);
+		$items = preg_replace('/class="breadcrumb-item"/', 'class="breadcrumb-item active"', $items);
     }
-    $items = preg_replace('/class="breadcrumb-item"/', 'class="breadcrumb-item active"', $items);
 
     return $items;
 }, 20);
