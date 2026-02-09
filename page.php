@@ -47,7 +47,7 @@ get_header();
               global $wpdb;
 
           $sub_query = "
-          SELECT post_id, IFNULL(MAX(data), '1970-01-01') AS max_date
+          SELECT post_id, COALESCE(MAX(data), '1970-01-01') AS max_date
           FROM {$wpdb->prefix}postmeta
           WHERE meta_key = 'data' AND post_type='eventi_progetto'
           GROUP BY post_id
@@ -85,7 +85,6 @@ get_header();
           // Aggiorniamo args per includere i progetti ordinati
           $args['post__in'] = $sorted_ids;
           $args['orderby'] = 'post__in'; // Ordina in base all'array di IDs ordinati
-
 
           $query = new WP_Query($args);
 
