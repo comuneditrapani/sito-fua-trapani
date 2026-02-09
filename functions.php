@@ -529,7 +529,7 @@ if(false){
 
 /**
  * creo un filtro per rendere non linkabile il crumb "Amministrazione"
- * soluzione temporanea in attesa adi avere tutti i dati della sezione Amministrazione
+ * soluzione temporanea in attesa di avere tutti i dati della sezione Amministrazione
  */
 add_filter('breadcrumb_trail', function ($items) {
     $pattern = '/<a [^>]*><span [^>]*itemprop="name"[^>]*>Amministrazione<\/span><\/a>/iu';
