@@ -497,7 +497,6 @@ add_filter('breadcrumb_trail_items', function ($items) {
     // Quando sei nel singolo "Luogo"
     if ( is_singular('luogo') ) {
         $label = 'Comuni FUA';
-        // Item NON cliccabile: niente <a>, solo testo
         $crumb_html = sprintf(
             '<li class="breadcrumb-item"><a href="%s">%s</a></li>',
             home_url(),
