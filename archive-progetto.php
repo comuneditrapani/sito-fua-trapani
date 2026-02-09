@@ -29,6 +29,9 @@ $ord          = isset($_GET['ord']) ? sanitize_text_field(wp_unslash($_GET['ord'
  * Ci serve per l’action del form e per il link di "reset".
  */
 $archive_url = get_post_type_archive_link('progetto');
+
+  // questa mi serve per ottenere il numero totale di post
+  global $wp_query;
 ?>
 
 <main id="main">
@@ -116,6 +119,9 @@ $archive_url = get_post_type_archive_link('progetto');
               <a class="btn btn-outline-primary" href="<?php echo esc_url($archive_url); ?>">Reset</a>
             </div>
 
+            <div class="col-12 d-flex gap-2">
+              <?php echo $wp_query->found_posts; ?> progetti trovati
+            </div>
           </div>
         </form>
 
