@@ -241,7 +241,6 @@ add_action('acf/save_post', function ($post_id) {
  */
 add_action('pre_get_posts', function ($query) {
 
-
     // Interveniamo SOLO sull’archivio del CPT "progetto"
     if (!is_post_type_archive('progetto')) {
         return;
@@ -309,9 +308,10 @@ add_action('pre_get_posts', function ($query) {
         $term = sanitize_text_field(wp_unslash($_GET['q']));
 
         /**
-         * Lista dei field name ACF su cui cerchiamo (dal tuo export JSON "Campi di Progetto")
-         * Includiamo sia text che textarea; includiamo anche rif_comune (number) perché spesso
-         * l’utente può voler cercare un codice/protocollo.
+         * Lista dei field name ACF su cui cerchiamo (dal tuo export
+         * JSON "Campi di Progetto")
+         *
+         * Includiamo sia text che textarea;
          *
          * Limite solo ai campi testuali.
          */
@@ -319,7 +319,6 @@ add_action('pre_get_posts', function ($query) {
             'titolo',
             'descrizione',
             'beneficiario',
-            'rif_comune',
             'azione_st',
             'azione_pr_fesr',
             'obiettivo_specifico',
@@ -536,7 +535,7 @@ add_filter('breadcrumb_trail', function ($items) {
     if (preg_match($pattern, $items)) {
         $replacement = '<span itemprop="item"><span itemprop="name">Amministrazione</span></span>';
         $items = preg_replace($pattern, $replacement, $items);
-		$items = preg_replace('/class="breadcrumb-item"/', 'class="breadcrumb-item active"', $items);
+        $items = preg_replace('/class="breadcrumb-item"/', 'class="breadcrumb-item active"', $items);
     }
 
     return $items;
