@@ -475,7 +475,7 @@ add_action('acf/save_post', function ($post_id) {
  *      omesso vale 1, e la callback non riceverebbe il post_type.
  */
 
-/* add_filter('register_post_type_args', function ($args, $post_type) {
+ add_filter('register_post_type_args', function ($args, $post_type) {
     if ($post_type === 'luogo') {
         $rewrite = $args['rewrite'] ?? [];
         $rewrite['slug'] = 'comuni-fua';
@@ -483,24 +483,9 @@ add_action('acf/save_post', function ($post_id) {
     }
 
     return $args;
-}, 99, 2); */
+}, 99, 2); 
 
-add_filter('register_post_type_args', function ($args, $post_type) {
-    //$args['has_archive'] = true;
-    if ($post_type === 'luogo') {
 
-        // Base singoli: /comuni-fua/{slug}/
-        $rewrite = (isset($args['rewrite']) && is_array($args['rewrite'])) ? $args['rewrite'] : [];
-        $rewrite['slug'] = 'comuni-fua';
-        $rewrite['with_front'] = false;
-        $args['rewrite'] = $rewrite;
-
-        // Se è un archivio: /comuni-fua/
-        $args['has_archive'] = 'comuni-fua';
-    }
-
-    return $args;
-}, 99, 2);
 
 
 
