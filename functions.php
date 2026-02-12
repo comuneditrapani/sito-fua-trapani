@@ -476,7 +476,6 @@ add_action('acf/save_post', function ($post_id) {
  */
 
  add_filter('register_post_type_args', function ($args, $post_type) {
-     echo "POST_TYPE -> ".$post_type;
     if ($post_type === 'luogo') {
         $rewrite = $args['rewrite'] ?? [];
         $rewrite['slug'] = 'comuni-fua';
@@ -544,6 +543,22 @@ add_filter('breadcrumb_trail', function ($items) {
 
     return $items;
 }, 20);
+
+
+//UN PO DI DEBUG 
+add_action('wp_footer', function () {
+  if ( ! current_user_can('manage_options') ) return;
+
+  $post_type = get_query_var('post_type');
+
+  echo '<div style="position:fixed;bottom:10px;left:10px;z-index:99999;background:#111;color:#fff;padding:10px;border-radius:6px;font:12px/1.4 monospace;">';
+  echo 'is_page: ' . (is_page() ? 'YES' : 'no') . '<br>';
+  echo 'is_post_type_archive: ' . (function_exists('is_post_type_archive') && is_post_type_archive() ? 'YES' : 'no') . '<br>';
+  echo 'post_type query_var: ' . (is_array($post_type) ? implode(',', $post_type) : ($post_type ?: '(none)')) . '<br>';
+  echo 'is_archive: ' . (is_archive() ? 'YES' : 'no');
+  echo '</div>';
+});
+
 
 
 ?>
