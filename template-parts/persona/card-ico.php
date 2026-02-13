@@ -4,8 +4,8 @@
   $persona = get_post($persona_id);
   $prefix = '_dci_persona_pubblica_';
   $descrizione_breve = dci_get_meta('descrizione_breve', $prefix, $persona_id);
-  if($descrizione_breve && preg_match('/^sindaco di/i', $descrizione_breve)) {
-      $comune = trim(preg_replace('/^sindaco di/i', '', $descrizione_breve));
+  if($descrizione_breve && preg_match('/^sindaco di[ ]*(.*)$/i', $descrizione_breve, $trovati)) {
+      $comune = trim($trovati[1]);
   }
   $immagine = dci_get_meta('immagine', $prefix, $persona_id);
   $incarichi_id = dci_get_meta('incarichi', $prefix, $persona_id);
