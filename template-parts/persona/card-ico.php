@@ -34,13 +34,6 @@
         <?php } else { ?>
         <p style="text-align: center"><?= $descrizione_breve ?></p>
         <p style="text-align: center">(<?= $comune ?>)</p>
-        <p class="titillium text-paragraph mb-0">
-          <?php
-            if ($incarichi) foreach ($incarichi as $inc_id) {
-                    echo ' - ' . get_the_title($inc_id);
-                }
-          ?>
-        </p>
         <?php } ?>
       </div>
     </a>
