@@ -17,10 +17,17 @@ get_header();
         the_post();
         $user_can_view_post = dci_members_can_user_view_post(get_current_user_id(), $post->ID);
         $descrizione_breve = dci_get_meta("descrizione_breve", $prefix, $post->ID);
-        $immagine = dci_get_meta('immagine', $prefix, $post->ID);
+        $is_sindaco = false;
         $incarichi = dci_get_meta('incarichi', $prefix, $post->ID);
+        if (is_array($incarichi)) foreach ($incarichi as $inc_id) {
+                $is_sindaco |= preg_match('/^sindaco/i', get_the_title($inc_id));
+            }
         $comune_id = dci_get_meta('luogo_riferimento', $prefix, $post->ID);
         $comune = get_the_title($comune_id);
+        $immagine = dci_get_meta('immagine', $prefix, $post->ID);
+        if(empty($immagine)) {
+            $immagine = dci_get_meta('immagine', '_dci_luogo_', $comune_id);
+        }
         $organizzazioni = dci_get_meta("organizzazioni", $prefix, $post->ID);
         $responsabile_di = dci_get_meta("responsabile_di", $prefix, $post->ID);
         $data_conclusione_incarico = dci_get_meta("data_conclusione_incarico", $prefix, $post->ID);
@@ -211,28 +218,15 @@ get_header();
             ?>
 		  </div>
         </section>
-		<?php } ?>
+		<?php }
+          if (!empty($comune_id)) {?>
 		<section class="col-lg-4 it-page-section anchor-offset" data-audio>
 		  <h4 id="incarico">Appartenenza</h4>
 		  <div class="richtext-wrapper lora">
 			<?= $comune ?>
 		  </div>
         </section>
-		<?php
-            if(preg_match('/(sindaco|assessore)/i', $incarico)) {
-                $tipo_incarico = "Politico";
-            } else {
-                $tipo_incarico = "Amministrativo";
-            }
-        ?>
-        <!--
-		<section class="it-page-section anchor-offset mt-5" data-audio>
-		  <h4 id="tipo-incarico">Tipo di incarico</h4>
-		  <div class="richtext-wrapper lora">
-			<?= $tipo_incarico ?>
-		  </div>
-        </section>
-        -->
+		<?php } ?>
         </div>
 
         <?php if( is_array($organizzazioni) && count($organizzazioni) ) { ?>
