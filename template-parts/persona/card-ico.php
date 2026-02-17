@@ -4,25 +4,15 @@
   $persona = get_post($persona_id);
   $prefix = '_dci_persona_pubblica_';
   $descrizione_breve = dci_get_meta('descrizione_breve', $prefix, $persona_id);
-  if($descrizione_breve && preg_match('/^sindaco di[ ]*(.*)$/i', $descrizione_breve, $trovati)) {
-      $comune = trim($trovati[1]);
-  }
+  $is_sindaco = $descrizione_breve && preg_match('/^sindaco/i', $descrizione_breve);
   $immagine = dci_get_meta('immagine', $prefix, $persona_id);
   $incarichi_id = dci_get_meta('incarichi', $prefix, $persona_id);
 
-  // se questo sindaco non ha una foto, usare l'immagine del comune
-  if (empty($immagine) && isset($comune)) {
-      $args = array(
-          'name'        => sanitize_title($comune),
-          'post_type'   => 'luogo',
-          'posts_per_page' => 1,
-      );
-
-      $luoghi = get_posts($args);
-      foreach($luoghi as $luogo) { // uno solo
-          setup_postdata($luogo);
-      }
-      $immagine = dci_get_meta('immagine', '_dci_luogo_', $luogo->ID);
+  $comune_id = dci_get_meta('luogo_riferimento', $prefix, $persona_id);
+  $comune = get_the_title($comune_id);
+  // se è un sindaco e non ha una foto, usare l'immagine del comune
+  if($is_sindaco && empty($immagine)) {
+      $immagine = dci_get_meta('immagine', '_dci_luogo_', $comune_id);
   }
 ?>
 
@@ -36,10 +26,11 @@
         </div>
         <?php endif; ?>
         <p style="text-align: center" class="card-title"><strong><?php echo $persona->post_title; ?></strong></p>
-        <?php if(isset($comune)) { ?>
+        <?php if($is_sindaco) { ?>
         <p style="text-align: center">(<?= $comune ?>)</p>
         <?php } else { ?>
-          <p style="text-align: center"><?= $descrizione_breve ?></p>
+        <p style="text-align: center"><?= $descrizione_breve ?></p>
+        <p style="text-align: center">(<?= $comune ?>)</p>
         <?php } ?>
         <p class="titillium text-paragraph mb-0">
           <?php
