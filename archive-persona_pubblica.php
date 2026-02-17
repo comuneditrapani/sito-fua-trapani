@@ -44,19 +44,23 @@
 
             <!-- Filtro per comune (campo ACF text) -->
             <div class="col-12 col-lg-3">
-              <label class="form-label" for="comune">Comune</label>
               <select class="form-select" id="comune" name="comune" onchange="form.submit()">
-                <option value="">&lt;qualsiasi&gt;</option>
+                <option value="">&lt;qualsiasi comune&gt;</option>
                 <?php
-                $values = ['Buseto Palizzolo', 'Valderice', 'Erice', 'Trapani', 'Paceco', 'Misiliscemi', 'Marsala', 'Petrosino', 'Mazara del Vallo', 'Campobello di Mazara', 'Castelvetrano'];
-                foreach ($values as $v) {
-                  printf(
-                    '<option value="%s"%s>%s</option>',
-                    esc_attr($v),
-                    selected($comune, $v, false),
-                    esc_html($v)
-                  );
-                }
+                    global $wpdb;
+                  $query = "select id, post_title "
+                      . "from wp_posts "
+                      . "where post_type='luogo' "
+                      . "order by post_title";
+                  $values = $wpdb->get_results($query, ARRAY_A);
+                  foreach ($values as $v) {
+                      printf(
+                          '<option value="%s"%s>%s</option>',
+                          esc_attr($v['id']),
+                          selected($comune, $v['id'], false),
+                          esc_html($v['post_title'])
+                      );
+                  }
                 ?>
               </select>
             </div>
