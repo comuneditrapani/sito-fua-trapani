@@ -33,10 +33,12 @@ get_header();
     // conta quanti progetti hanno questo luogo come beneficiario
     global $wpdb;
     $sql_prepared = $wpdb->prepare(
-        "SELECT COUNT(*)
-    FROM $wpdb->postmeta
-    WHERE meta_key = 'beneficiario'
-    AND meta_value = %s",
+        "SELECT COUNT(p1.id)
+    FROM $wpdb->posts p1
+    JOIN $wpdb->postmeta pm ON pm.post_id=p1.id
+    WHERE pm.meta_key = 'beneficiario'
+      AND pm.meta_value = %s
+      AND p1.post_status='publish'",
         get_the_title()
     );
     $count_progetti = $wpdb->get_var($sql_prepared);
