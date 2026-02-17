@@ -371,6 +371,34 @@ add_action('pre_get_posts', function ($query) {
 
 }, 30); // priority 30: per farlo girare dopo altri eventuali filtri tema/plugin
 
+add_action('pre_get_posts', function ($query) {
+    if (!is_post_type_archive('persona_pubblica')) {
+        return;
+    }
+    if (is_admin() || !$query->is_main_query()) {
+        return;
+    }
+    $query->set('posts_per_page', 6);
+
+    if (!empty($_GET['comune'])) {
+        // Sanitize input
+        $meta_key   = '_dci_persona_pubblica_luogo_riferimento';
+        $meta_value = sanitize_text_field($_GET['comune']);
+
+        // Create the meta query
+        $meta_query = array(
+            array(
+                'key'   => $meta_key,
+                'value' => $meta_value,
+                'compare' => '='
+            ),
+        );
+
+        // Set the meta query
+        $query->set('meta_query', $meta_query);
+    }
+});
+
 /**
  * ============================================================
  * Ricalcolo _last_event_date_ymd di un progetto quando salvo un evento-progetto
