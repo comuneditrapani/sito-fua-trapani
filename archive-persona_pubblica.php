@@ -88,8 +88,6 @@
             </nav>
           </div>
 
-        <?php else : ?>
-          <p class="text-muted">Nessun progetto pubblicato.</p>
         <?php endif; ?>
 
       </div>
