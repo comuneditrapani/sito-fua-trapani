@@ -18,16 +18,7 @@ $assessorati_riferimento = dci_get_term_meta('assessorato_riferimento', "dci_ter
 get_header();
 ?>
 <main>
-    <div class="it-hero-wrapper it-wrapped-container" id="main-container">
-      <?php if ($img) { ?>
-      <div class="img-responsive-wrapper">
-        <div class="img-responsive">
-          <div class="img-wrapper">
-            <?php dci_get_img($img); ?>
-          </div>
-        </div>
-      </div>
-      <?php } ?>
+    <div class="it-wrapped-container" id="main-container">
       <div class="container">
         <div class="row">
           <div class="col-12 px-0 px-lg-2">
