@@ -103,10 +103,9 @@ global $wpdb;
       </div>
       <div class="row justify-content-center">
         <div class="col-12 col-lg-6 py-lg-2">
-
           <div class="row g-3 align-items-start">
             <!-- Testo (titolo + descrizione breve) -->
-            <div class="col-12 <?php echo $sindaco_id ? 'col-lg-7' : 'col-lg-12'; ?>">
+            <div class="col-12 <?php echo $sindaco_id ? 'col-lg-9' : 'col-lg-12'; ?>">
               <h1 data-audio><?php the_title(); ?></h1>
 
               <?php if ($nome_alternativo) { ?>
