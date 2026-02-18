@@ -44,6 +44,53 @@ get_header();
     $count_progetti = $wpdb->get_var($sql_prepared);
 
     $progetti_collegati_url = get_site_url()."/progetti/?q=&beneficiario=".get_the_title()."&avanzamento=&ord=event_desc";
+    
+     /**
+     * ==========================
+     * Trova la Persona Pubblica "Sindaco" collegata al Luogo corrente
+     * ==========================
+     */   
+    $global $wpdb;
+
+    // ID del luogo (Comune) corrente
+    $luogo_id = (int) get_the_ID();
+
+    // ID dell'incarico "Sindaco" (dal tuo esempio: 370)
+    $incarico_id = 370;
+
+    /**
+     * Replico la tua query:
+     * - pm1 = meta luogo (luogo_riferimento)
+     * - pm2 = meta incarichi (incarichi contiene l'ID "sindaco")
+     * - poi filtro per luogo_id = ID_COMUNE
+     *
+     * Nota sul LIKE:
+     * - se il valore è un array serializzato, cercare '"370"' riduce i falsi positivi (es. 37, 3701).
+     */
+    $sql = $wpdb->prepare(
+      "
+      SELECT sub.persona_id
+      FROM (
+        SELECT pm1.post_id AS persona_id,
+               pm1.meta_value AS luogo_id
+        FROM {$wpdb->postmeta} pm1
+        INNER JOIN {$wpdb->postmeta} pm2
+                ON pm1.post_id = pm2.post_id
+        WHERE pm1.meta_key = %s
+          AND pm2.meta_key = %s
+          AND pm2.meta_value LIKE %s
+      ) AS sub
+      WHERE sub.luogo_id = %d
+      LIMIT 1
+      ",
+      '_dci_persona_pubblica_luogo_riferimento',
+      '_dci_persona_pubblica_incarichi',
+      '%"' . (int) $incarico_id . '"%',
+      $luogo_id
+    );
+
+    // Ritorna una sola colonna (persona_id) o null
+    $sindaco_id = (int) $wpdb->get_var($sql);
 
   ?>
 
@@ -55,14 +102,33 @@ get_header();
       </div>
       <div class="row justify-content-center">
         <div class="col-12 col-lg-6 py-lg-2">
-          <h1 data-audio><?php the_title(); ?></h1>
-          <?php if ($nome_alternativo) { ?>
-          <h2 class="h4 py-2" data-audio><?php echo $nome_alternativo; ?></h2>
-          <?php } ?>
-          <p data-audio>
-            <?php echo $descrizione_breve; ?>
-          </p>
-        </div>
+
+          <div class="row g-3 align-items-start">
+            <!-- Testo (titolo + descrizione breve) -->
+            <div class="col-12 <?php echo $sindaco_id ? 'col-lg-7' : 'col-lg-12'; ?>">
+              <h1 data-audio><?php the_title(); ?></h1>
+
+              <?php if ($nome_alternativo) { ?>
+                <h2 class="h4 py-2" data-audio><?php echo $nome_alternativo; ?></h2>
+              <?php } ?>
+
+              <p data-audio>
+                <?php echo $descrizione_breve; ?>
+              </p>
+            </div>
+
+            <!-- Card-ico del Sindaco (solo se esiste) -->
+            <?php if ($sindaco_id) { ?>
+              <div class="col-12 col-lg-5">
+                <?php
+                  $persona_id = $sindaco_id;
+                  get_template_part("template-parts/persona/card-ico");
+                ?>
+              </div>
+            <?php } ?>
+          </div>
+
+</div>
         <div class="col-lg-3 offset-lg-1">
           <?php
               $inline = true;
