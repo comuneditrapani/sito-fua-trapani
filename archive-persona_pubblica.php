@@ -14,6 +14,7 @@
    *    Li usiamo per ripopolare i campi del form dopo l’invio (UX).
    */
   $comune = isset($_GET['comune']) ? sanitize_text_field(wp_unslash($_GET['comune'])) : '';
+  $senza_comune = !empty($comune);
   
   /**
    * URL canonico dell’archivio del CPT.
@@ -74,7 +75,6 @@
             <?php while (have_posts()) :
               the_post();
               $descrizione  = get_field('descrizione') ?? '';
-
             ?>
               <div class="col-12 col-md-6 col-xl-4">
                 <?php get_template_part("template-parts/persona/card-ico"); ?>

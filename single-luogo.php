@@ -45,6 +45,7 @@ global $wpdb;
     $count_progetti = $wpdb->get_var($sql_prepared);
 
     $progetti_collegati_url = get_site_url()."/progetti/?q=&beneficiario=".get_the_title()."&avanzamento=&ord=event_desc";
+    $persone_collegate_url = get_site_url()."/persona_pubblica/?comune=".get_the_ID();
     
      /**
      * ==========================
@@ -227,7 +228,8 @@ global $wpdb;
         </aside>
 
         <section class="col-lg-8 it-page-sections-container border-light">
-          <article id="progetti-collegati" class="it-page-section mb-5" "data-audio">
+          <div class="row">
+          <article id="progetti-collegati" class="col-lg-5 mb-2" "data-audio">
             <?php if($count_progetti == 0) { ?>
             Non sono presenti progetti collegati a <?= get_the_title() ?>
             <?php } else { ?>
@@ -237,6 +239,13 @@ global $wpdb;
               </button>
             </a>
             <?php } ?>
+          </article>
+          <article id="persone-collegate" class="col-lg-5 mb-2" "data-audio">
+            <a href="<?= $persone_collegate_url ?>">
+              <button class="btn btn-primary">
+                Visualizza persone collegate
+              </button>
+            </a>
           </article>
 
           <article id="descrizione-estesa" class="it-page-section mb-5" "data-audio">

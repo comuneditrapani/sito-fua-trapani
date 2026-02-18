@@ -33,7 +33,9 @@ global $persona_id, $senza_comune;
         <p style="text-align: center">(<?= $comune ?>)</p>
         <?php } } else { ?>
         <p style="text-align: center"><?= $descrizione_breve ?></p>
+        <?php if(!$senza_comune) { ?>
         <p style="text-align: center">(<?= $comune ?>)</p>
+        <?php } ?>
         <?php } ?>
       </div>
     </a>
