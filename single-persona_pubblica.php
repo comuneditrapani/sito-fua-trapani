@@ -32,46 +32,6 @@ get_header();
 			$variazione_situazione_patrimoniale = dci_get_meta("variazione_situazione_patrimoniale", $prefix, $post->ID);
 			$altre_cariche = dci_get_meta("altre_cariche", $prefix, $post->ID);			
 			$more_info = dci_get_wysiwyg_field("ulteriori_informazioni", $prefix, $post->ID);
-            
-            
-            /**
- * ============================================================
- * Trova la Persona Pubblica con incarico "Sindaco" per il Luogo corrente
- * ============================================================
-
- * - L'incarico è salvato come array serializzato o stringa con gli ID, per questo usiamo LIKE su '"ID"'.
- */
-
-// ID del Comune/Luogo corrente
-$luogo_id = get_the_ID();
-//ID dell'incarico "Sindaco"
-$ID_INCARICO_SINDACO = 370;
-
-// Query WP per trovare la persona pubblica "Sindaco" collegata a questo luogo
-$sindaco_q = new WP_Query([
-  'post_type'      => 'persona_pubblica',
-  'post_status'    => 'publish',
-  'posts_per_page' => 1,
-  'fields'         => 'ids',         // prestazioni: prendiamo solo gli ID
-  'no_found_rows'  => true,          // prestazioni: niente paginazione
-  'meta_query'     => [
-    'relation' => 'AND',
-    [
-      'key'     => '_dci_persona_pubblica_luogo_riferimento',
-      'value'   => (string) $luogo_id,
-      'compare' => '=',
-    ],
-    [
-      'key'     => '_dci_persona_pubblica_incarichi',
-      'value'   => '"' . (int) $ID_INCARICO_SINDACO . '"',
-      'compare' => 'LIKE',
-    ],
-  ],
-]);
-echo "HABEMUS SINDACO !!  -> ".$sindaco_id;
-// Se trovato, prendiamo l'ID del post persona_pubblica (Sindaco)
-$sindaco_id = (!empty($sindaco_q->posts)) ? (int) $sindaco_q->posts[0] : 0;
-
 		
             ?>
             <div class="container px-4 my-4" id="main-container">
@@ -81,34 +41,11 @@ $sindaco_id = (!empty($sindaco_q->posts)) ? (int) $sindaco_q->posts[0] : 0;
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12 col-lg-6 py-lg-2">
-
-                        <div class="row g-3 align-items-start">
-                        <!-- Testo (titolo + descrizione breve) -->
-                        <div class="col-12 <?php echo $sindaco_id ? 'col-lg-7' : 'col-lg-12'; ?>">
+                    <div class="col-lg-8 px-lg-4 py-lg-2">
                         <h1 data-audio><?php the_title(); ?></h1>
-
-                            <?php if ($nome_alternativo) { ?>
-                            <h2 class="h4 py-2" data-audio><?php echo $nome_alternativo; ?></h2>
-                            <?php } ?>
-
-                            <p data-audio>
-                             <?php echo $descrizione_breve; ?>
-                            </p>
-                        </div>
-
-                        <!-- Card-ico del Sindaco (solo se esiste) -->
-                        <?php if ($sindaco_id) { ?>
-                          <div class="col-12 col-lg-5">
-                            <?php
-
-                              $persona_id = $sindaco_id;
-                              get_template_part("template-parts/persona/card-ico");
-                            ?>
-                          </div>
-                        <?php } ?>
-                      </div>
-
+                        <p data-audio>
+                            <?php echo $descrizione_breve; ?>
+                        </p>
                     </div>
                     <div class="col-lg-3 offset-lg-1">
                         <?php 
