@@ -1,5 +1,5 @@
 <?php
-  global $persona_id;
+global $persona_id, $senza_comune;
 
   $persona = get_the_title($persona_id);
   $prefix = '_dci_persona_pubblica_';
@@ -29,9 +29,9 @@
         </div>
         <?php endif; ?>
         <p style="text-align: center" class="card-title"><strong><?php echo $persona; ?></strong></p>
-        <?php if($is_sindaco) { ?>
+        <?php if($is_sindaco) { if(!$senza_comune) { ?>
         <p style="text-align: center">(<?= $comune ?>)</p>
-        <?php } else { ?>
+        <?php } } else { ?>
         <p style="text-align: center"><?= $descrizione_breve ?></p>
         <p style="text-align: center">(<?= $comune ?>)</p>
         <?php } ?>

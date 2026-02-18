@@ -120,9 +120,10 @@ global $wpdb;
 
             <!-- Card-ico del Sindaco (solo se esiste) -->
             <?php if ($sindaco_id) { ?>
-              <div class="col-12 col-lg-5">
+              <div class="col-12 col-lg-3">
                 <?php
                   $persona_id = $sindaco_id;
+                  $senza_comune = true;
                   get_template_part("template-parts/persona/card-ico");
                 ?>
               </div>
