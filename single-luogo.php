@@ -8,6 +8,7 @@
  */
 
 get_header();
+global $wpdb;
 ?>
 
 <main>
@@ -31,7 +32,7 @@ get_header();
     $ulteriori_informazioni = dci_get_wysiwyg_field("ulteriori_informazioni", $prefix, $post->ID);
 
     // conta quanti progetti hanno questo luogo come beneficiario
-    global $wpdb;
+    
     $sql_prepared = $wpdb->prepare(
         "SELECT COUNT(p1.id)
     FROM $wpdb->posts p1
@@ -50,7 +51,7 @@ get_header();
      * Trova la Persona Pubblica "Sindaco" collegata al Luogo corrente
      * ==========================
      */   
-    $global $wpdb;
+   
 
     // ID del luogo (Comune) corrente
     $luogo_id = (int) get_the_ID();
