@@ -557,6 +557,50 @@ add_filter('breadcrumb_trail_items', function ($items) {
     return $items;
 }, 30);
 
+
+add_filter('breadcrumb_trail_items', function ($items) {
+
+  // Solo nelle pagine singole di persona_pubblica
+  if (!is_singular('persona_pubblica')) {
+    return $items;
+  }
+
+  // URL della pagina elenco archivio persone pubbliche
+  $archive_url = get_post_type_archive_link('persona_pubblica');
+
+  // Se non funziona has_archive, forzo la  pagina elenco delle persone pubbliche 
+  if (empty($archive_url)) {
+    $archive_url = home_url('/persona_pubblica/?comune=');  
+    return $items;
+  }
+
+  foreach ($items as $i => $item_html) {
+
+    /**
+     * Dovrebbe matchare il crumb non linkabile "Amministrazione"
+     * nel formato copiato dall'html della pagina attuale:
+     * <span itemprop="item"><span itemprop="name">Amministrazione</span></span>
+     */
+    $pattern = '/<span\b[^>]*itemprop\s*=\s*"item"[^>]*>\s*<span\b[^>]*itemprop\s*=\s*"name"[^>]*>\s*Amministrazione\s*<\/span>\s*<\/span>/iu';
+
+    if (preg_match($pattern, $item_html)) {
+
+      // Sostituiamo con crumb linkato "Persone Pubbliche"
+      $replacement = sprintf(
+        '<a href="%s" itemprop="item" class="" data-focus-mouse="false"><span itemprop="name">Persone Pubbliche</span></a>',
+        esc_url($archive_url)
+      );
+
+      $items[$i] = preg_replace($pattern, $replacement, $item_html);
+      break;
+    }
+  }
+
+  return $items;
+
+}, 40);
+
+
 // utili per il debug, vedi cosa fanno i tuoi filtri.
 if(false){
     $callback_group = 'breadcrumb_trail_items';
