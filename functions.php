@@ -116,7 +116,6 @@ add_filter('register_post_type_args', function ($args, $post_type) {
  *   elemento non linkato, come da buona pratica.
  */
 add_filter('breadcrumb_trail_items', function ($items) {
-
     // Applica SOLO nell’archivio del CPT "progetto"
     if (!is_post_type_archive('progetto')) {
         return $items;
@@ -558,48 +557,6 @@ add_filter('breadcrumb_trail_items', function ($items) {
 }, 30);
 
 
-add_filter('breadcrumb_trail_items', function ($items) {
-
-  // Solo nelle pagine singole di persona_pubblica
-  if (!is_singular('persona_pubblica')) {
-    return $items;
-  }
-
-  // URL della pagina elenco archivio persone pubbliche
-  $archive_url = get_post_type_archive_link('persona_pubblica');
-
-  // Se non funziona has_archive, forzo la  pagina elenco delle persone pubbliche 
-  if (empty($archive_url)) {
-    $archive_url = home_url('/persona_pubblica/?comune=');  
-    return $items;
-  }
-
-  foreach ($items as $i => $item_html) {
-
-    /**
-     * Dovrebbe matchare il crumb non linkabile "Amministrazione"
-     * nel formato copiato dall'html della pagina attuale:
-     * <span itemprop="item"><span itemprop="name">Amministrazione</span></span>
-     */
-    $pattern = '/<span\b[^>]*itemprop\s*=\s*"item"[^>]*>\s*<span\b[^>]*itemprop\s*=\s*"name"[^>]*>\s*Amministrazione\s*<\/span>\s*<\/span>/iu';
-
-    if (preg_match($pattern, $item_html)) {
-
-      // Sostituiamo con crumb linkato "Persone Pubbliche"
-      $replacement = sprintf(
-        '<a href="%s" itemprop="item" class="" data-focus-mouse="false"><span itemprop="name">Persone Pubbliche</span></a>',
-        esc_url($archive_url)
-      );
-
-      $items[$i] = preg_replace($pattern, $replacement, $item_html);
-      break;
-    }
-  }
-
-  return $items;
-
-}, 40);
-
 
 // utili per il debug, vedi cosa fanno i tuoi filtri.
 if(false){
@@ -622,18 +579,34 @@ if(false){
  * creo un filtro per rendere non linkabile il crumb "Amministrazione"
  * soluzione temporanea in attesa di avere tutti i dati della sezione Amministrazione
  */
-add_filter('breadcrumb_trail', function ($items) {
+add_filter('breadcrumb_trail', function ($trail) {
     $pattern = '/<a [^>]*><span [^>]*itemprop="name"[^>]*>Amministrazione<\/span><\/a>/iu';
 
-    if (preg_match($pattern, $items)) {
+    if (preg_match($pattern, $trail)) {
         $replacement = '<span itemprop="item"><span itemprop="name">Amministrazione</span></span>';
-        $items = preg_replace($pattern, $replacement, $items);
-        $items = preg_replace('/class="breadcrumb-item"/', 'class="breadcrumb-item active"', $items);
+        $trail = preg_replace($pattern, $replacement, $trail);
+        $trail = preg_replace('/class="breadcrumb-item"/', 'class="breadcrumb-item active"', $trail);
     }
 
-    return $items;
-}, 20);
+    return $trail;
+}, 90);
 
+
+add_filter('breadcrumb_trail', function ($trail) {
+    // Solo nelle pagine singole di persona_pubblica
+    // deve essere invocata PRIMA di quella che leva il link da Amministrazione
+    if (!is_singular('persona_pubblica')) {
+        return $trail;
+    }
+
+    $pattern = '/(.*<a [^>]*)amministrazione([^>]*><span [^>]*itemprop="name"[^>]*>)Amministrazione(<\/span><\/a>.*)/iu';
+
+    if( preg_match($pattern, $trail, $parts) ) {
+        $trail = $parts[1] . 'persona_pubblica' . $parts[2] . 'Persone Pubbliche' . $parts[3];
+    }
+
+    return $trail;
+}, 23);
 
 //UN PO DI DEBUG
 if(false) {
