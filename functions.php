@@ -599,11 +599,15 @@ add_filter('breadcrumb_trail', function ($trail) {
         return $trail;
     }
 
-    $pattern = '/(.*<a [^>]*)amministrazione([^>]*><span [^>]*itemprop="name"[^>]*>)Amministrazione(<\/span><\/a>.*)/iu';
+    $pattern = '/(.*<a [^>]*)amministrazione([^>]*>'.
+        '<span [^>]*itemprop="name"[^>]*>)Amministrazione(<\/span>'.
+        '<\/a>.*)/iu';
 
-    if( preg_match($pattern, $trail, $parts) ) {
-        $trail = $parts[1] . 'persona_pubblica' . $parts[2] . 'Persone Pubbliche' . $parts[3];
-    }
+    $trail = preg_replace(
+        $pattern,
+        '$1persona_pubblica$2Persone Pubbliche$3',
+        $trail
+    );
 
     return $trail;
 }, 23);
