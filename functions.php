@@ -47,6 +47,39 @@ add_action('wp_enqueue_scripts', function() {
     }
 }, 11);
 
+/**
+  If you want to keep your site lean without adding more plugins, you
+  can hook into WordPress's script loader. Add this snippet to your
+  functions.php to defer all scripts except jQuery (which often breaks
+  things if deferred):
+ */
+function defer_parsing_of_js( $url ) {
+    if ( is_user_logged_in() ) return $url; // Don't break the admin bar
+    if ( FALSE === strpos( $url, '.js' ) ) return $url;
+    if ( strpos( $url, 'jquery.js' ) ) return $url;
+    return str_replace( ' src', ' defer src', $url );
+}
+add_filter( 'script_loader_tag', 'defer_parsing_of_js', 10 );
+
+function aggiungi_preconnect_header() {
+    // Sostituisci l'IP con l'indirizzo del tuo server se diverso
+    echo '<link rel="preconnect" href="http://172.16.30.201">' . "\n";
+    echo '<link rel="dns-prefetch" href="http://172.16.30.201">' . "\n";
+}
+add_action('wp_head', 'aggiungi_preconnect_header', 1);
+
+add_filter('style_loader_tag', function($tag, $slug) {
+    // facciamo il preload degli stylesheet bloccanti.
+    if ( in_array($slug, ['dci-font'])) {
+        return str_replace(
+            "rel='stylesheet'",
+            "rel='preload' as='style' onload=\"this.onload=null;this.rel='stylesheet'\"",
+            $tag
+        ) . '<noscript>' . $tag . '</noscript>';
+    }
+    return $tag;
+}, 10, 2);
+
 
 /**
  * ============================================================
