@@ -118,6 +118,3 @@ Sul sito di destinazione:
 
 - Elimina sempre `installer.php` e `archive.zip` dopo il completamento.    
 - Conserva il backup Duplicator in un luogo sicuro per eventuali rollback.
-
-- Elimina sempre `installer.php` e `archive.zip` dopo il completamento.  
-- Limita l’accesso esterno a cartelle di ba
