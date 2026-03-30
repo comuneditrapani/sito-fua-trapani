@@ -62,9 +62,19 @@ function defer_parsing_of_js( $url ) {
 add_filter( 'script_loader_tag', 'defer_parsing_of_js', 10 );
 
 function aggiungi_preconnect_header() {
-    // Sostituisci l'IP con l'indirizzo del tuo server se diverso
-    echo '<link rel="preconnect" href="http://172.16.30.201">' . "\n";
-    echo '<link rel="dns-prefetch" href="http://172.16.30.201">' . "\n";
+    $origins = [
+        'https://fonts.googleapis.com' => false,
+        'https://fonts.gstatic.com'   => true, // needs crossorigin
+        'https://cdn.example.com'     => false,
+    ];
+
+    foreach ($origins as $origin => $crossorigin) {
+        echo '<link rel="preconnect" href="' . esc_url($origin) . '"'
+            . ($crossorigin ? ' crossorigin' : '')
+            . '>' . "\n";
+
+        echo '<link rel="dns-prefetch" href="' . esc_url($origin) . '">' . "\n";
+    }
 }
 add_action('wp_head', 'aggiungi_preconnect_header', 1);
 
