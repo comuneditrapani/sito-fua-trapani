@@ -53,13 +53,17 @@ add_action('wp_enqueue_scripts', function() {
   functions.php to defer all scripts except jQuery (which often breaks
   things if deferred):
  */
-function defer_parsing_of_js( $url ) {
-    if ( is_user_logged_in() ) return $url; // Don't break the admin bar
-    if ( FALSE === strpos( $url, '.js' ) ) return $url;
-    if ( strpos( $url, 'jquery.js' ) ) return $url;
-    return str_replace( ' src', ' defer src', $url );
+function defer_parsing_of_js( $tag, $handle, $src ) {
+    if (is_user_logged_in()) return $tag; // Don't break the admin bar
+    if (FALSE === strpos( $src, '.js' )) return $tag;
+    if (in_array($handle, ['jquery', 'jquery-core', 'jquery-migrate'])) return $tag;
+    // Evita duplicazione
+    if (strpos( $tag, 'defer' ) !== false) {
+        return $tag;
+    }
+    return str_replace( '<script ', '<script defer ', $tag );
 }
-add_filter( 'script_loader_tag', 'defer_parsing_of_js', 10 );
+add_filter( 'script_loader_tag', 'defer_parsing_of_js', 10, 3 );
 
 function aggiungi_preconnect_header() {
     $origins = [
